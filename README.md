@@ -12,9 +12,47 @@ This project implements a custom RL environment based on the FluentFusion langua
 - **Action Space**: 4 discrete actions (up, down, left, right)
 - **Reward Structure**:
   - +1.0 for reaching the goal (final lesson)
+  - Shaped reward: +0.01 * distance reduction towards goal
   - +0.1 for completing lessons (increasing proficiency)
   - -0.01 step penalty
 - **Terminal Conditions**: Goal reached or max steps exceeded
+
+### Agent-Environment Diagram
+
+```
++-------------------+
+| FluentFusion RL   |
+| Environment       |
++-------------------+
+         |
+         | State: [x, y, proficiency]
+         v
+    +---------+
+    |  Agent  | <--- Actions: [up, down, left, right]
+    | (Blue   |
+    | Circle) |
+    +---------+
+         |
+         | Observations
+         v
++-------------------+
+| 2D Grid World     |
+| - Yellow circles: |
+|   Lesson positions|
+| - Green square:   |
+|   Goal position   |
+| - Grid navigation |
++-------------------+
+         |
+         | Rewards
+         v
+    +---------+
+    | Learning|
+    | Algorithm|
+    | (DQN/PPO/|
+    | etc.)    |
+    +---------+
+```
 
 ### Implemented Algorithms
 
