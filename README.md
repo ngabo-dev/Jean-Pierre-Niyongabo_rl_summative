@@ -121,7 +121,13 @@ This will first show a random agent demonstration, then run the trained PPO mode
 
 ### Hyperparameter Tuning
 
-At least 10 runs per algorithm with different parameter combinations are recommended. Below are suggested hyperparameter combinations for tuning:
+At least 10 runs per algorithm with different parameter combinations are recommended. Below are suggested hyperparameter combinations for tuning.
+
+To run all experiments automatically, use the provided script:
+```bash
+./run_experiments.sh
+```
+This will execute all 40 experiments sequentially (7 DQN + 10 PPO + 10 A2C + 10 REINFORCE).
 
 #### DQN Hyperparameter Combinations
 
