@@ -3,6 +3,7 @@ Policy Gradient Training Scripts for FluentFusion RL Environment
 Includes REINFORCE, PPO, and A2C implementations.
 """
 
+import argparse
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -126,14 +127,46 @@ def train_a2c(learning_rate=7e-4, n_steps=5, gamma=0.99, total_timesteps=10000):
     return model
 
 if __name__ == "__main__":
-    # Train all models
-    print("Training REINFORCE...")
-    reinforce_policy = train_reinforce()
+    parser = argparse.ArgumentParser(description='Train Policy Gradient models for FluentFusion RL Environment')
+    parser.add_argument('--algorithm', type=str, choices=['reinforce', 'ppo', 'a2c', 'all'], default='all',
+                        help='Algorithm to train (default: all)')
+    parser.add_argument('--learning_rate', type=float, default=3e-4, help='Learning rate for PPO/A2C')
+    parser.add_argument('--n_steps', type=int, default=2048, help='Number of steps for PPO')
+    parser.add_argument('--batch_size', type=int, default=64, help='Batch size for PPO')
+    parser.add_argument('--n_epochs', type=int, default=10, help='Number of epochs for PPO')
+    parser.add_argument('--gamma', type=float, default=0.99, help='Discount factor')
+    parser.add_argument('--total_timesteps', type=int, default=50000, help='Total training timesteps')
+    parser.add_argument('--reinforce_lr', type=float, default=1e-3, help='Learning rate for REINFORCE')
+    parser.add_argument('--reinforce_episodes', type=int, default=1000, help='Number of episodes for REINFORCE')
 
-    print("Training PPO...")
-    ppo_model = train_ppo()
+    args = parser.parse_args()
 
-    print("Training A2C...")
-    a2c_model = train_a2c()
+    if args.algorithm in ['reinforce', 'all']:
+        print("Training REINFORCE...")
+        reinforce_policy = train_reinforce(
+            learning_rate=args.reinforce_lr,
+            gamma=args.gamma,
+            num_episodes=args.reinforce_episodes
+        )
 
-    print("All policy gradient models trained and saved.")
+    if args.algorithm in ['ppo', 'all']:
+        print("Training PPO...")
+        ppo_model = train_ppo(
+            learning_rate=args.learning_rate,
+            n_steps=args.n_steps,
+            batch_size=args.batch_size,
+            n_epochs=args.n_epochs,
+            gamma=args.gamma,
+            total_timesteps=args.total_timesteps
+        )
+
+    if args.algorithm in ['a2c', 'all']:
+        print("Training A2C...")
+        a2c_model = train_a2c(
+            learning_rate=args.learning_rate,
+            n_steps=args.n_steps,
+            gamma=args.gamma,
+            total_timesteps=args.total_timesteps
+        )
+
+    print("Training completed.")

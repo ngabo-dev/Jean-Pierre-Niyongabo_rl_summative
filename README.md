@@ -96,14 +96,17 @@ project_root/
 
 ### Training Models
 
-Train individual algorithms:
+Train individual algorithms with customizable hyperparameters:
 
 ```bash
-# Train DQN
-python training/dqn_training.py
+# Train DQN with custom parameters
+python training/dqn_training.py --learning_rate 0.001 --buffer_size 50000 --batch_size 64 --total_timesteps 20000
 
-# Train Policy Gradient methods
-python training/pg_training.py
+# Train specific PG algorithm
+python training/pg_training.py --algorithm ppo --learning_rate 0.0003 --total_timesteps 50000
+
+# Train all PG methods
+python training/pg_training.py --algorithm all
 ```
 
 ### Running the Best Model
